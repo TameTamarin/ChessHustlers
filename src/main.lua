@@ -9,14 +9,14 @@ function love.load()
     x = 0
     FPSCAP = 60
     DT = 1/1000 --miliseconds
-    CIRCLECOORDS = {100,100}
+    CIRCLECOORDS = {400,400}
     CIRCLESIZE = 3
     CIRCLESPEED = 5
-    WINDOWX = 800
-    WINDOWY = 400
-end
-
-function love.resize(WINDOWX, WINDOWY)
+    WINDOWX = 1000
+    WINDOWY = 800
+    success = love.window.setMode(WINDOWX, WINDOWY)
+    canvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
+    background = love.graphics.newImage('/Images/VintageChessBoard.png')
 end
 
 
@@ -41,7 +41,7 @@ function love.draw()
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
     love.graphics.print("Click the dot ...", 40, 400)
     love.graphics.circle( "fill", CIRCLECOORDS[1], CIRCLECOORDS[2], CIRCLESIZE)
-
+    love.graphics.draw(background, 0,0)
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(click), 40, 350)
 end
