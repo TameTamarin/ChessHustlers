@@ -1,3 +1,7 @@
+
+---------------------------------
+-- Load Function callback
+---------------------------------
 function love.load()
     -- load in submodules
     timing = require('timing')
@@ -20,7 +24,7 @@ function love.load()
     background = love.graphics.newImage('/Images/Backgrounds/VintageChessBoard.png')
     boardBackground = love.graphics.rectangle("fill", BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZE, BOARDSIZE)
     
-    
+    -- Setup Canvas for drawing background and the board
     love.graphics.setCanvas(canvas)
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
@@ -30,6 +34,10 @@ function love.load()
     king = love.graphics.newImage('/Images/ChessPieces/KingPiece.png')
 end
 
+
+---------------------------------
+-- Update Function callback
+---------------------------------
 function love.update()
     -- Control frame rate
     sleep(DT, FPSCAP)
@@ -47,6 +55,9 @@ function love.update()
 end
 
 
+---------------------------------
+-- Draw Function callback
+---------------------------------
 function love.draw()
     love.graphics.draw(canvas, 0,0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
