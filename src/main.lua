@@ -3,18 +3,18 @@ function love.load()
     timing = require('timing')
     keyCommands = require('keyCommands')
     cursor = require('cursor')
+    board = require('board')
     
     -- Setup GLobal variables
     timeStart = love.timer.getTime()
     x = 0
     FPSCAP = 60
     DT = 1/1000 --miliseconds
-    BOARDSIZE = 800
-    SQUARESIZE = BOARDSIZE/8
-    BOARDSTARTPOS = {0, 0}
-    
     WINDOWX = 1000
     WINDOWY = 900
+    BOARDSIZE = 600
+    SPACESIZE = BOARDSIZE/8
+    BOARDSTARTPOS = {WINDOWX/2 - BOARDSIZE/2, WINDOWY/2 - BOARDSIZE/2}
     success = love.window.setMode(WINDOWX, WINDOWY)
     canvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
     background = love.graphics.newImage('/Images/Backgrounds/VintageChessBoard.png')
@@ -25,7 +25,7 @@ function love.load()
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
         --love.graphics.draw(background, 0,0)
-        drawBoard()
+        drawBoard(BOARDSTARTPOS, BOARDSIZE, SPACESIZE)
         love.graphics.setCanvas()
     king = love.graphics.newImage('/Images/ChessPieces/KingPiece.png')
 end
@@ -51,26 +51,9 @@ function love.draw()
     love.graphics.draw(canvas, 0,0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
     love.graphics.print("Click the dot ...", 40, 400)
-    --love.graphics.rectangle( "fill", CIRCLECOORDS[1], CIRCLECOORDS[2], SQUARESIZE, SQUARESIZE)
+    --love.graphics.rectangle( "fill", CIRCLECOORDS[1], CIRCLECOORDS[2], SPACESIZE, SPACESIZE)
     --love.graphics.draw(king, 0,0)
 
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
     love.graphics.print("Mouse clicked ..." .. tostring(click), 40, 350)
 end
-
-
-function drawBoard()
-    love.graphics.rectangle("line", BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZE, BOARDSIZE)
-        for row = 0, 7 do
-            for loopIndex = 0, 3 do
-                if row % 2 == 0 then
-                    love.graphics.rectangle( "fill", BOARDSTARTPOS[1]+ (loopIndex*2+1)*SQUARESIZE, BOARDSTARTPOS[2]+ row*SQUARESIZE, SQUARESIZE, SQUARESIZE)
-                else
-                    love.graphics.rectangle( "fill", BOARDSTARTPOS[1]+ loopIndex*2*SQUARESIZE, BOARDSTARTPOS[2]+ row*SQUARESIZE, SQUARESIZE, SQUARESIZE)
-                    
-                end
-        
-            end
-    
-        end
-    end
