@@ -1,0 +1,29 @@
+{
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "lua-local",
+        "request": "launch",
+        "name": "Debug",
+        "program": {
+          "command": "/opt/homebrew/bin/lua"
+        },
+        "args": [
+          "~/Documents/Projects/Love2DGames/ChessHustlers/src/scratch.lua",
+          "debug"
+        ]
+      },
+      {
+        "type": "lua-local",
+        "request": "launch",
+        "name": "Release",
+        "program": {
+          "command": "/opt/homebrew/bin/lua"
+        },
+        "args": [
+          "~/Documents/Projects/Love2DGames/ChessHustlers/src/scratch.lua"
+        ]
+      }
+    ]
+  }
