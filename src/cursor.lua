@@ -1,3 +1,5 @@
+CLICKED = false
+
 function getCursorPosition()
     x, y = love.mouse.getPosition( )
     return x,y
@@ -8,4 +10,13 @@ function checkMouseClick()
     button = 1
     down = love.mouse.isDown( button)
     return down
+end
+
+function getMousePosOnClick()
+    if not CLICKED and checkMouseClick() then
+        clickedPos = getCursorPosition()
+        return clickedPos
+    else
+        return clickedPos
+    end
 end

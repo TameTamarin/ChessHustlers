@@ -1,42 +1,36 @@
--- Initalize the variables for all of the board spaces
-
-SPACESIZE = 0
-BOARDHEIGHT = 0
-BOARDWIDTH = 0
 
 ------------------------------------
 -- Functions for settibg board
 -- dimensions
 ------------------------------------
-function setSpaceSize(spaceSize)
-    SPACESIZE = spaceSize
+function updateSpaceSize(spaceSize)
+    
 end
 
-function setBoardPosition(xStartPos, yStartPos)
-    XSTARTPOS = xStartPos
-    YSTARTPOS = yStartPos
+function updateBoardPosition(xStartPos, yStartPos)
+    
 end
 
-function setBoardSpaceDimensions(heightSpaces, widthSpaces)
-    BOARDHEIGHT = heightSpaces
-    BOARDWIDTH  = widthSpaces
+function updateBoardSpaceDimensions(heightSpaces, widthSpaces)
+   
 end
 
 ------------------------------------
 -- Funtion for initalizing the board
 ------------------------------------
 
-function initBoardState()
+function initBoardState(xStartPos, yStartPos, spaceSize)
     -- Initiate the boardstate as a blank table
     boardState = {}
-    x = 0 + XSTARTPOS
-    
+    x = 0 + xStartPos
+    heightSpaces = 8
+    widthSpaces = 8
     -- iterate through each space based on the size of the board
-    for i = 1, BOARDWIDTH do
+    for i = 1, widthSpaces do
         boardState[i] = {}
         -- y position has to be reinitallized for each index of the x position so we start from top
-        y = 0 + YSTARTPOS
-        for j = 1, BOARDHEIGHT do
+        y = 0 + yStartPos
+        for j = 1, heightSpaces do
             -- set all the attributes for each space
             boardState[i][j] = {
             ["xpos"] = 0,
@@ -53,11 +47,11 @@ function initBoardState()
             -- set each x and y position of the currently indexed space
             boardState[i][j]["xpos"] = x
             boardState[i][j]["ypos"] = y
-            y = y + SPACESIZE
+            y = y + spaceSize
         end
 
         -- Increment the x pos after setting each paramater
-        x = x + SPACESIZE
+        x = x + spaceSize
 
     end
 end
@@ -74,7 +68,7 @@ end
 -----------------------------------
 -- Function to draw the chess board
 -----------------------------------
-function drawBoard(boardStartPos, boardSize)
+function drawBoard(boardStartPos, boardSize, spaceSize)
     love.graphics.rectangle("line", boardStartPos[1], boardStartPos[2], boardSize, boardSize)
     colorIndex = 1
     for i = 1, #boardState do
@@ -85,26 +79,36 @@ function drawBoard(boardStartPos, boardSize)
                 love.graphics.setColor(0,1,0)
             end
             colorIndex = colorIndex + 1
-            love.graphics.rectangle( "fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], SPACESIZE, SPACESIZE)
+            love.graphics.rectangle( "fill", boardState[i][j]["xpos"], boardState[i][j]["ypos"], spaceSize, spaceSize)
         end
         colorIndex = colorIndex + 1
     end
 end
 
-
-
-function drawBoardOld(boardStartPos, boardSize)
-    -- love.graphics.setColor(1,0,0)
-    love.graphics.rectangle("line", boardStartPos[1], boardStartPos[2], boardSize, boardSize)
-    for row = 0, 7 do
-        for loopIndex = 0, 3 do
-            if row % 2 == 0 then
-                love.graphics.rectangle( "fill", boardStartPos[1]+ (loopIndex*2+1)*SPACESIZE, boardStartPos[2]+ row*SPACESIZE, SPACESIZE, SPACESIZE)
-            else
-                love.graphics.rectangle( "fill", boardStartPos[1]+ loopIndex*2*SPACESIZE, boardStartPos[2]+ row*SPACESIZE, SPACESIZE, SPACESIZE)
-                
+function getSlectedSpace(xCoord, yCoord, spaceSize)
+    -- with a given set of coordinates, return the row and collumn of
+    -- the selected space
+    for i = 1, #boardState do
+        for j = 1, #boardState[i] do
+            -- get bounds of indexed space
+            spaceXLeftBound = boardState[i][j]["xpos"] - spaceSize/2
+            spaceXRightBound = boardState[i][j]["xpos"] + spaceSize/2
+            spaceYLowerBound = boardState[i][j]["ypos"] - spaceSize/2
+            spaceYUpperBound = boardState[i][j]["ypos"] + spaceSize/2
+            
+            -- check if input coords fall within indexeded space
+            if (xCoord > spaceXLeftBound) and (xCoord < spaceXRightBound) then --and yCoord > spaceYLowerBound and yCoord < spaceYUpperBound then
+                return i, j
             end
         end
     end
+    -- return nil if selected space is out of bounds
+    return nil, nil
 end
 
+
+function drawAllowedMoves()
+    -- Draws dots for the moves that are allowed to be made for the
+    -- selected space.  Selected space is determined from an input 
+    -- row and collumn indicies.
+end

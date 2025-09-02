@@ -4,9 +4,9 @@ end
 
 print("it's Wednesday ma dudes")
 
----------------------------------
--- Load Function callback
----------------------------------
+-----------------------------------------------------
+-- Load Function callback, called when program starts
+-----------------------------------------------------
 function love.load()
     -- load in submodules
     timing = require('timing')
@@ -16,66 +16,59 @@ function love.load()
     
     -- Setup GLobal variables
     timeStart = love.timer.getTime()
-    x = 0
     FPSCAP = 60
     DT = 1/1000 --miliseconds
     WINDOWX = 1000
     WINDOWY = 900
-    BOARDPIXELSIZE = 600
+    BOARDSIZEPIXELS = 600
     
-    BOARDSTARTPOS = {WINDOWX/2 - BOARDPIXELSIZE/2, WINDOWY/2 - BOARDPIXELSIZE/2}
+    BOARDSTARTPOS = {WINDOWX/2 - BOARDSIZEPIXELS/2, WINDOWY/2 - BOARDSIZEPIXELS/2}
     success = love.window.setMode(WINDOWX, WINDOWY)
-    canvas = love.graphics.newCanvas(WINDOWX, WINDOWY)
+    board = love.graphics.newCanvas(WINDOWX, WINDOWY)
     -- background = love.graphics.newImage('/Images/Backgrounds/VintageChessBoard.png')
-    -- boardBackground = love.graphics.rectangle("fill", BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDPIXELSIZE, BOARDPIXELSIZE)
-
+    
     -- Run initialization functions
-    setSpaceSize(BOARDPIXELSIZE/8)
-    setBoardSpaceDimensions(8,8)
-    setBoardPosition(BOARDSTARTPOS[1], BOARDSTARTPOS[2])
-    initBoardState()
+    initBoardState(BOARDSTARTPOS[1], BOARDSTARTPOS[2], BOARDSIZEPIXELS/8)
 
 -- Setup Canvas for drawing background and the board
-    love.graphics.setCanvas(canvas)
+    love.graphics.setCanvas(board)
         love.graphics.clear(0, 0, 0, 0)
         love.graphics.setBlendMode("alpha")
-        --love.graphics.draw(background, 0,0)
-        drawBoard(BOARDSTARTPOS, BOARDPIXELSIZE)
+        drawBoard(BOARDSTARTPOS, BOARDSIZEPIXELS, BOARDSIZEPIXELS/8)
         love.graphics.setCanvas()
     king = love.graphics.newImage('/Images/ChessPieces/KingPiece.png')
 end
 
 
----------------------------------
+
+
+-----------------------------------------------------
 -- Update Function callback
----------------------------------
+-----------------------------------------------------
 function love.update()
     -- Control frame rate
     sleep(DT, FPSCAP)
     
     cursorX, cursorY = getCursorPosition()
+
+    clickX, clickY = getMousePosOnClick()
+
+
     
-    CIRCLECOORDS = moveCircle(CIRCLECOORDS, CIRCLESPEED)
-    click = checkMouseClick()
-    if click then
-        if (CIRCLECOORDS[1] - 10 <= cursorX) and (CIRCLECOORDS[1] + 10 >= cursorX) and (CIRCLECOORDS[2] - 10 <= cursorY) and (CIRCLECOORDS[2] + 10 >= cursorY) then
-        CIRCLECOORDS[1] = math.random(10, 400)
-        CIRCLECOORDS[2] = math.random(10, 400)
-        end
-    end
+    
 end
 
 
----------------------------------
+-----------------------------------------------------
 -- Draw Function callback
----------------------------------
+-----------------------------------------------------
 function love.draw()
     -- love.graphics.setColor(1,0,0)
-    love.graphics.draw(canvas, 0, 0)
+    love.graphics.draw(board, 0, 0)
     love.graphics.print("Cursor Position ..." .. tostring(cursorX)..", "..tostring(cursorY), 40, 300)
     love.graphics.print("Click the dot ...", 40, 400)
     --love.graphics.draw(king, 0,0)
 
     love.graphics.print("Current elapsed game time ..." .. tostring(elapsedTime()), 40, 100)
-    love.graphics.print("Mouse clicked ..." .. tostring(click), 40, 350)
+    love.graphics.print("Mouse clicked ..." .. tostring(clickX), 40, 350)
 end
