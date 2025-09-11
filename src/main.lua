@@ -1,8 +1,8 @@
-if arg[2] == "debug" then
-    require("lldebugger").start()
-end
+-- if arg[2] == "debug" then
+--     require("lldebugger").start()
+-- end
 
-print("it's Wednesday ma dudes")
+-- print("it's Wednesday ma dudes")
 
 -----------------------------------------------------
 -- Load Function callback, called when program starts
